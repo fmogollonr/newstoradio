@@ -1,4 +1,4 @@
-import pyttsx3;
+import pyttsx3
 
 class tts:
     def __init__(self):

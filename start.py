@@ -3,6 +3,8 @@ import tts
 import Aemet
 import time
 import threading
+import metar
+import requests
 
 from flask import Flask, jsonify, request
 
@@ -25,12 +27,22 @@ def speak():
 @app.route('/weather')
 def query_weather():
     if 'city' in request.args:
-        tiempo = Aemet.Localidad('28079', time.strftime("%d/%m/%Y"))
-        tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura máxima: "+tiempo.get_temperatura_maxima()
+        tiempo = Aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
+        tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura maxima: "+tiempo.get_temperatura_maxima()
+        r = requests.get("http://localhost:5000/speak?text="+tiempo_texto)
+        #tiempo = Aemet.Localidad('28079', time.strftime("%d/%m/%Y"))
+        #tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura máxima: "+tiempo.get_temperatura_maxima()
         #say("El tiempo para Madrid: temperatura máxima: 16 grados")
         return 'Get weather for '+request.args['city']
     else:
         return 'De que me hablas'
+
+@app.route('/airportweather')
+def query_airport_weather():
+    if 'airport' in request.args:
+        metarinstance=metar.metar()
+        results=metarinstance.getMetar(request.args['airport'])
+        return 'METAR results: '+results.text,200
 
 
 
