@@ -3,8 +3,9 @@ import tts
 import Aemet
 import time
 import threading
-import metar
+import metarairport
 import requests
+import json
 
 from flask import Flask, jsonify, request
 
@@ -19,7 +20,7 @@ def say(text):
 @app.route('/speak')
 def speak():
     if 'text' in request.args:
-        say("Hola "+request.args['text'])
+        say(request.args['text'])
         return 'Say '+request.args['text']
     else:
   	    return 'Dont say anything'
@@ -40,9 +41,14 @@ def query_weather():
 @app.route('/airportweather')
 def query_airport_weather():
     if 'airport' in request.args:
-        metarinstance=metar.metar()
+        metarinstance=metarairport.metar()
         results=metarinstance.getMetar(request.args['airport'])
-        return 'METAR results: '+results.text,200
+        prediccion=json.loads(results.text)
+        metarpredicts =prediccion['data']
+        for predict in metarpredicts:
+                resumen_meteorologico=metarinstance.parseMetar(predict)
+                #r = requests.get("http://localhost:5000/speak?text="+resumen_meteorologico)
+                return 'METAR results: '+resumen_meteorologico,200
 
 
 
