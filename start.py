@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import tts
-import Aemet
+import aemet
 import time
 import threading
 import metarairport
@@ -28,7 +28,7 @@ def speak():
 @app.route('/weather')
 def query_weather():
     if 'city' in request.args:
-        tiempo = Aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
+        tiempo = aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
         tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura maxima: "+tiempo.get_temperatura_maxima()
         r = requests.get("http://localhost:5000/speak?text="+tiempo_texto)
         #tiempo = Aemet.Localidad('28079', time.strftime("%d/%m/%Y"))

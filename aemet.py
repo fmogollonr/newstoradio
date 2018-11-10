@@ -1,6 +1,6 @@
 # -*- coding: UTF-8-*-
 from xml.etree.ElementTree import parse
-from urllib import urlopen
+from urllib.request import urlopen
 import datetime
 
 class Base:
