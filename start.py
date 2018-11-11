@@ -39,6 +39,7 @@ def query_weather():
         #tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura máxima: "+tiempo.get_temperatura_maxima()
         #say("El tiempo para Madrid: temperatura máxima: 16 grados")
         #return 'Predicción meteorológica para '+request.args['city']+': '+tiempo_texto,200
+        r = requests.get("http://localhost:5000/speak?text="+tiempo)
         return tiempo,200
     else:
         return 'De que me hablas'
@@ -52,7 +53,7 @@ def query_airport_weather():
         metarpredicts =prediccion['data']
         for predict in metarpredicts:
                 resumen_meteorologico=metarinstance.parseMetar(predict)
-                #r = requests.get("http://localhost:5000/speak?text="+resumen_meteorologico)
+                r = requests.get("http://localhost:5000/speak?text="+resumen_meteorologico)
                 return 'METAR results: '+resumen_meteorologico,200
 
 
