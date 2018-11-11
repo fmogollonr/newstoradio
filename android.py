@@ -5,6 +5,7 @@ import aemet
 import time
 import threading
 import metarairport
+import aemettiempo
 import json
 
 
@@ -17,6 +18,10 @@ metarpredicts =prediccion['data']
 for predict in metarpredicts:
     resumen_meteorologico=metarinstance.parseMetar(predict)
     droid.ttsSpeak(resumen_meteorologico)
+aemettiempoinstance=aemettiempo.amettiempo()
+tiempo=aemettiempoinstance.getTiempo('20069',time.strftime("%d/%m/%Y"))
+droid.ttsSpeak(tiempo)
+   
 
 
 message = droid.dialogGetInput('TTS', '¿Qué quieres decir?').result

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import tts
-import aemet
-import time
+import aemettiempo
 import threading
 import metarairport
 import requests
 import json
+import time
 
 from flask import Flask, jsonify, request
 
@@ -29,14 +29,17 @@ def speak():
 def query_weather():
         #http://www.aemet.es/xml/municipios/localidad_20069.xml
     if 'city' in request.args:
-        tiempo = aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
-        print(tiempo.get_localidad())
-        tiempo_texto="El tiempo para "+tiempo.get_localidad().decode("utf-8")+": temperatura maxima: "+str(tiempo.get_temperatura_maxima())
+        aemettiempoinstance=aemettiempo.amettiempo()
+        tiempo=aemettiempoinstance.getTiempo(request.args['city'],time.strftime("%d/%m/%Y"))
+        #tiempo = aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
+        #print(tiempo.get_localidad())
+        #tiempo_texto="El tiempo para "+tiempo.get_localidad().decode("utf-8")+": temperatura maxima: "+str(tiempo.get_temperatura_maxima())
         #r = requests.get("http://localhost:5000/speak?text="+tiempo_texto)
         #tiempo = Aemet.Localidad('28079', time.strftime("%d/%m/%Y"))
         #tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura máxima: "+tiempo.get_temperatura_maxima()
         #say("El tiempo para Madrid: temperatura máxima: 16 grados")
-        return 'Predicción meteorológica para '+request.args['city']+': '+tiempo_texto,200
+        #return 'Predicción meteorológica para '+request.args['city']+': '+tiempo_texto,200
+        return tiempo,200
     else:
         return 'De que me hablas'
 
