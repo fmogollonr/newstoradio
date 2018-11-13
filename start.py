@@ -3,7 +3,6 @@ import tts
 import aemettiempo
 import threading
 import metarairport
-import requests
 import json
 import time
 import os
