@@ -11,7 +11,6 @@ import os
 from flask import Flask, jsonify, request,Response
 
 app = Flask(__name__) #create the Flask app
-port=80
 
 # Get file
 def get_file(filename):  # pragma: no cover
@@ -31,6 +30,10 @@ def get_file(filename):  # pragma: no cover
 def say(text):
     speech=tts.tts()
     speech.say(text)
+@app.route('/', methods=['GET'])
+def getindex2():  # pragma: no cover
+    content = get_file('index.html')
+    return Response(content, mimetype="text/html")
 
 @app.route('/index.html', methods=['GET'])
 def getindex():  # pragma: no cover
@@ -49,30 +52,40 @@ def genmessage():
 def speak():
     #return "OK",200
     if 'text' in request.args:
-        #return "Text is"+request.args['text'],200
-        say(request.args['text'])
+        if request.args['text'] is not "":
+            #return "Text is"+request.args['text'],200
+            say(request.args['text'])
         #return 'Say '+request.args['text']
+    else:
+        return 'basura',200
     if 'city' in request.args:
-        #return "City is"+request.args['city'],200
-        aemettiempoinstance=aemettiempo.amettiempo()
-        tiempo=aemettiempoinstance.getTiempo(request.args['city'],time.strftime("%d/%m/%Y"))
-        r = requests.get("/speak?text="+tiempo)
-        #return tiempo,200
+        if request.args['city'] is not "":
+            print("city is ",request.args['city'])
+            #return "City is"+request.args['city'],200
+            aemettiempoinstance=aemettiempo.amettiempo()
+            if aemettiempoinstance.validCity(request.args['city']):
+                tiempo=aemettiempoinstance.getTiempo(request.args['city'],time.strftime("%d/%m/%Y"))
+                r = requests.get("/speak?text="+tiempo)
+            #return tiempo,200
+    else:
+        return 'basura',200
     if 'airport' in request.args:
-        #return "Airport is "+['airport'],200
-        metarinstance=metarairport.metar()
-        results=metarinstance.getMetar(request.args['airport'])
-        prediccion=json.loads(results.text)
-        metarpredicts =prediccion['data']
-        for predict in metarpredicts:
-                resumen_meteorologico=metarinstance.parseMetar(predict)
-                r = requests.get("/speak?text="+resumen_meteorologico)
-                #return 'METAR results: '+resumen_meteorologico,200
-
+        if request.args['airport'] is not "":
+            #return "Airport is "+['airport'],200
+            metarinstance=metarairport.metar()
+            if metarinstance.validAirport(request.args['airport']):
+                results=metarinstance.getMetar(request.args['airport'])
+                prediccion=json.loads(results.text)
+                metarpredicts =prediccion['data']
+                for predict in metarpredicts:
+                    resumen_meteorologico=metarinstance.parseMetar(predict)
+                    r = requests.get("/speak?text="+resumen_meteorologico)
+                    #return 'METAR results: '+resumen_meteorologico,200
     else:
   	    return 'Dont say anything',200
     
-    return 'catacrack',200
+    content = get_file('index.html')
+    return Response(content, mimetype="text/html")
 
 @app.route('/weather')
 def query_weather():
@@ -108,4 +121,4 @@ def query_airport_weather():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5000) #run app in debug mode on port 5000
+    app.run(host= '0.0.0.0',debug=False, port=5000) #run app in debug mode on port 5000

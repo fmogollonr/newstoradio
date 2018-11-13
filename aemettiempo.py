@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import aemet
 import time
+import ciudades
 
 
 class amettiempo ():
@@ -8,7 +9,11 @@ class amettiempo ():
         self.weather=aemet
 
 
-
+    def validCity(self,city):
+        if city in ciudades.ciudades:
+            return True
+        return False
+    
     def getTiempo (self,localidad,time):
         tiempo = self.weather.Localidad(localidad, time)
         tmax=tiempo.get_temperatura_maxima()

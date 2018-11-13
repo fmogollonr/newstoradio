@@ -4,6 +4,7 @@ import json
 from metar import Metar
 import locale
 from pprint import pprint
+import aeropuertos
 
 
 class metar ():
@@ -18,6 +19,10 @@ class metar ():
         self.headers={ 'X-API-Key': key }
         #self.gs = goslate.Goslate()
 
+    def validAirport(self,airport):
+        if airport in aeropuertos.aeropuertos:
+            return True
+        return False
 
     def getMetar(self,ICAO):
         response=requests.get('https://api.checkwx.com/metar/'+ICAO,headers=self.headers)
