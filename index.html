@@ -6,8 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://pingendo.com/assets/bootstrap/bootstrap-4.0.0-beta.1.css" type="text/css"> </head>
-
-<body>
+<script>
+function myFunction (){
+boton = document .getElementById("boton");
+cargando = document.getElementById("cargando");
+boton.addEventListener("click", function(){
+  cargando.hidden= false
+  boton.hidden=true
+});
+}
+</script>
+<body onload="myFunction()">
   <div class="py-5">
     <div class="container">
       <div class="row">
@@ -23,25 +32,12 @@
                 <div class="form-group"> <label>Ciudad</label>
                   <input type="text" class="form-control" placeholder="Código postal" name="city"> 
                 </div>
-                  <!--<div class="form-group"> <label>Correo electrónico de respuesta</label>
-                    <input type="email" class="form-control" placeholder="Correo electrónico" name="responsemail"> 
-                  </div>-->
-                  <!--<div class="form-group"> <label>Código ISRC</label>
-                    <input type="text" class="form-control" placeholder="Ej: ES-000-07-00001" name="isrccode"> 
-                  </div>-->
                   <div class="form-group">
                     <label for="exampleFormControlTextarea1">Texto extra</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
                   </div>
-                  <!--<div class="form-group">
-                    <label for="imageFiles">Imágenes</label>
-                    <input type="file" class="form-control-file" id="imageFiles" multiple name="images[]" accept="image/*">
-                  </div>
-                  <div class="form-group">
-                    <label for="audioFiles">Audio</label>
-                    <input type="file" class="form-control-file" id="audioFiles" accept="audio/*" name="audio">
-                  </div>-->
-                <button type="submit" class="btn btn-secondary">Speak</button>
+                <button type="submit" class="btn btn-secondary" id="boton">Speak</button>
+                <div id="cargando" hidden ><img src="https://vignette.wikia.nocookie.net/evangelion/images/4/42/Loading.gif/revision/latest?cb=20170729145717&path-prefix=de" /></div>
               </form>
             </div>
           </div>

@@ -34,6 +34,11 @@ def getindex2():  # pragma: no cover
     content = get_file('index.html')
     return Response(content, mimetype="text/html")
 
+@app.route('/wait.gif', methods=['GET'])
+def returnimage():  # pragma: no cover
+    content = get_file('wait.gif')
+    return Response(content, mimetype="image/gif")
+
 @app.route('/index.html', methods=['GET'])
 def getindex():  # pragma: no cover
     content = get_file('index.html')
