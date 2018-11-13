@@ -41,7 +41,7 @@ def getindex():  # pragma: no cover
     return Response(content, mimetype="text/html")
     
 @app.route('/speak')
-def genmessage():
+def speak():
     if 'text' in request.args:
         say(request.args['text'])
         return 'Say '+request.args['text']
@@ -49,29 +49,23 @@ def genmessage():
   	    return 'Dont say anything'
 
 @app.route('/genmessage')
-def speak():
-    #return "OK",200
+def genmessage():
     if 'text' in request.args:
         if request.args['text'] is not "":
-            #return "Text is"+request.args['text'],200
             say(request.args['text'])
-        #return 'Say '+request.args['text']
     else:
         return 'basura',200
     if 'city' in request.args:
         if request.args['city'] is not "":
             print("city is ",request.args['city'])
-            #return "City is"+request.args['city'],200
             aemettiempoinstance=aemettiempo.amettiempo()
             if aemettiempoinstance.validCity(request.args['city']):
                 tiempo=aemettiempoinstance.getTiempo(request.args['city'],time.strftime("%d/%m/%Y"))
-                r = requests.get("/speak?text="+tiempo)
-            #return tiempo,200
+                say(tiempo)
     else:
         return 'basura',200
     if 'airport' in request.args:
         if request.args['airport'] is not "":
-            #return "Airport is "+['airport'],200
             metarinstance=metarairport.metar()
             if metarinstance.validAirport(request.args['airport']):
                 results=metarinstance.getMetar(request.args['airport'])
@@ -79,8 +73,7 @@ def speak():
                 metarpredicts =prediccion['data']
                 for predict in metarpredicts:
                     resumen_meteorologico=metarinstance.parseMetar(predict)
-                    r = requests.get("/speak?text="+resumen_meteorologico)
-                    #return 'METAR results: '+resumen_meteorologico,200
+                    say(resumen_meteorologico)
     else:
   	    return 'Dont say anything',200
     
@@ -89,19 +82,10 @@ def speak():
 
 @app.route('/weather')
 def query_weather():
-        #http://www.aemet.es/xml/municipios/localidad_20069.xml
     if 'city' in request.args:
         aemettiempoinstance=aemettiempo.amettiempo()
         tiempo=aemettiempoinstance.getTiempo(request.args['city'],time.strftime("%d/%m/%Y"))
-        #tiempo = aemet.Localidad(request.args['city'], time.strftime("%d/%m/%Y"))
-        #print(tiempo.get_localidad())
-        #tiempo_texto="El tiempo para "+tiempo.get_localidad().decode("utf-8")+": temperatura maxima: "+str(tiempo.get_temperatura_maxima())
-        #r = requests.get("http://localhost:5000/speak?text="+tiempo_texto)
-        #tiempo = Aemet.Localidad('28079', time.strftime("%d/%m/%Y"))
-        #tiempo_texto="El tiempo para "+tiempo.get_localidad()+": temperatura máxima: "+tiempo.get_temperatura_maxima()
-        #say("El tiempo para Madrid: temperatura máxima: 16 grados")
-        #return 'Predicción meteorológica para '+request.args['city']+': '+tiempo_texto,200
-        r = requests.get("/speak?text="+tiempo)
+        say(tiempo)
         return tiempo,200
     else:
         return 'De que me hablas'
@@ -115,7 +99,7 @@ def query_airport_weather():
         metarpredicts =prediccion['data']
         for predict in metarpredicts:
                 resumen_meteorologico=metarinstance.parseMetar(predict)
-                r = requests.get("/speak?text="+resumen_meteorologico)
+                say(resumen_meteorologico)
                 return 'METAR results: '+resumen_meteorologico,200
 
 

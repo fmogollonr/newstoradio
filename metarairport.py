@@ -79,10 +79,10 @@ class metar ():
 
         #print(obs.dewpt)
 
-        pprint(vars(obs))
+        #pprint(vars(obs))
 
     def parseMetar(self,currentMetar):
-        self.preparseMetar(currentMetar)
+        #self.preparseMetar(currentMetar)
         obs = Metar.Metar(currentMetar)
         self.metar=obs
         response=requests.get('https://api.checkwx.com/station/'+str(obs.station_id),headers=self.headers)
