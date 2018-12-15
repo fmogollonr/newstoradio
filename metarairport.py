@@ -15,6 +15,7 @@ class metar ():
             if 'checkwxkey' in line:
                 aux= line.split(":")
                 key=aux[1]
+                key=key.rstrip("\n\r")
             
         self.headers={ 'X-API-Key': key }
 

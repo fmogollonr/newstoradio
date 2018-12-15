@@ -109,4 +109,12 @@ def query_airport_weather():
 
 
 if __name__ == '__main__':
-    app.run(host= '0.0.0.0',debug=False, port=5000) #run app in debug mode on port 5000
+    file=open('config.cfg', 'r') 
+    port=5001
+    for line in file: 
+        if 'port' in line:
+            aux= line.split(":")
+            port=aux[1]
+            aux=port.rstrip("\n\r")
+            port=int(aux)
+    app.run(host= '0.0.0.0',debug=False, port=port) #run app in debug mode on port 5000
