@@ -1,11 +1,9 @@
-import pyttsx3
+from google_speech import Speech
 
 class tts:
     def __init__(self):
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('voice', "spanish")
-        self.engine.setProperty('rate',150)
+        self.lang ="es"
 
     def say(self,text):
-        self.engine.say(text)
-        self.engine.runAndWait()
+        speech=Speech(text,self.lang)
+        speech.play()
